@@ -1,0 +1,50 @@
+# Works on Ubuntu 22.04.3 LTS
+# For any updates, check https://github.com/yash0713/virtualaudiostreamer.git
+
+# Setup
+>>Update the system
+	sudo apt update
+	sudo apt upgrade
+	
+>> Installing PulseAudio Volume Controller
+	sudo apt install pavucontrol
+	
+>> Installing dependencies
+	sudo add-apt-repository ppa:flatpak/stable
+	sudo apt install flatpak
+	sudo apt install python3
+	
+>> Download VAS.py from github
+	git clone https://github.com/yash0713/virtualaudiostreamer/blob/main/VAS.py
+
+>> Create a directory with name 'VAS streamer' and move VAS.py to this directory.
+
+
+# Instructions for use:
+
+1. Switch on both the Bluetooth Speakers and connect them to the laptop/system. (let's call them Speaker1 and Speaker2)
+
+2. Goto the 'VAS streamer' directory. Right click and open Terminal.
+
+3. type and enter the following command.
+	python3 VAS.py
+	
+4. click on 'Add new tab' button on the top-left corner of the Terminal window. In the new tab, type and run the following command
+	python3 VAS.py
+
+5. The PulseAudio Volume Control will open automatically.
+
+6. Under Playback tab, you will see two 'ALSA plug-in [aplay]' . Click on the drop-down list in front of first one and select 'Speaker1'. (Your speaker name might be different. Select accordingly)
+
+7. Repeat the above process and this time select 'Speaker2' from the drop down list.
+
+8. Click on Recording tab.
+
+9. Under Recording tab, you will see two 'ALSA plug-in [aplay]' . Click on the drop-down list in both and select 'Monitor of virtual_stream'.
+
+10. Everything is setup now. You can launch any audio application (Let's say VLC media player). The VLC media player audio stream will appear under the Playback tab. Click the drop-down list in front of it and select 'virtual_stream'
+
+11. End of instructions.
+
+
+HOPE THIS WORKS ON YOUR SYSTEM !!!
