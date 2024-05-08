@@ -1,30 +1,30 @@
 import subprocess
 import audioop
 
-try:    
-
-    print('#' * 80)
-    print('Initiating dynopii virtual audio cable ... ')
-    loadcmd = ['pacmd', 'load-module', 'module-null-sink', 'sink_name=dynopii_sink', 'sink_properties=device.description=dynopii']
-    subprocess.Popen(loadcmd)
+try:
+    print('-' * 40)
+    print('Initiating virtual audio cable ...')
+    cmd1 = ['pacmd', 'load-module', 'module-null-sink', 'sink_name=virtual_stream_sink', 'sink_properties=device.description=virtual_stream']
+    subprocess.Popen(cmd1)
     subprocess.Popen('pavucontrol')
-    
-    cmd0 = ['arecord', '-f', 'cd', '-']
-    p0 = subprocess.Popen(cmd0, stdout=subprocess.PIPE) 
 
     '''
-    This stdout of p0 is basically the data we get from arecord, and the data that we can manipulate on the fly and then
-    feed to the stdin of the next process p1. 
-    If you will work on this, you'll have to replace the stdin=p0.stdout of the following process p1 with your manipulated data.
+    Create a virtual input stream which can take audio input from system.
+    '''
+    cmd2 = ['arecord', '-f', 'cd', '-']
+    process1 = subprocess.Popen(cmd2, stdout=subprocess.PIPE)
+
+    '''
+    Create a virtual output stream which can direct the output to device.
     '''
 
-    cmd1 = ['aplay', '-f', 'cd', '-']
-    p1 = subprocess.Popen(cmd1, stdin=p0.stdout)
-    
+    cmd3 = ['aplay', '-f', 'cd', '-']
+    process2 = subprocess.Popen(cmd3,stdin=process1.stdout)
+
+    print('-' * 40)
+    print('Use CTRL+C to terminate the program and terminate the virtual stream')
     print('')
-    print('To quit this program and close your virtual device, press Ctrl-C')
-    print('')
-    print('#' * 80)
+    print('-' * 40)
     input()
 
 except EOFError:
@@ -32,19 +32,17 @@ except EOFError:
 
 except KeyboardInterrupt:
     print()
-    print('Closing the virtual audio cable ....')
-    print('Unloading null-sinks ...')
-    print('Stopping playback ...')
+    print('Exiting the program')
+    
+    uncmd1 = ['pactl', 'list', 'short', 'modules']
+    uncmd2 = ['grep', 'sink_name=virtual_stream_sink']
+    uncmd3 = ['cut', '-f1']
+    uncmd4 = ['xargs', '-L1', 'pactl', 'unload-module']
 
-    uncmd0 = ['pactl', 'list', 'short', 'modules']
-    uncmd1 = ['grep', 'sink_name=dynopii']
-    uncmd2 = [ 'cut', '-f1' ]
-    uncmd3 = [ 'xargs', '-L1', 'pactl', 'unload-module' ]
+    endprocess1 = subprocess.Popen(uncmd1, stdout=subprocess.PIPE)
+    endprocess2 = subprocess.Popen(uncmd2, stdin=endprocess1.stdout, stdout=subprocess.PIPE)
+    endprocess3 = subprocess.Popen(uncmd3, stdin=endprocess2.stdout, stdout=subprocess.PIPE)
+    endprocess4 = subprocess.Popen(uncmd4, stdin=endprocess3.stdout)
 
-    unp0 = subprocess.Popen(uncmd0, stdout=subprocess.PIPE)
-    unp1 = subprocess.Popen(uncmd1, stdin=unp0.stdout, stdout=subprocess.PIPE)
-    unp2 = subprocess.Popen(uncmd2, stdin=unp1.stdout, stdout=subprocess.PIPE)
-    unp3 = subprocess.Popen(uncmd3, stdin=unp2.stdout)
-
-    killcmd = ['pkill', 'arecord']  #kill arecord (hence killing ALSA playback since aplay simultaneously stops receiving input via the pipe)
+    killcmd = ['pkill', 'arecord'] # to kill the stream
     closefin = subprocess.Popen(killcmd)
