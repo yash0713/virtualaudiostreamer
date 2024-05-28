@@ -5,7 +5,7 @@ This Python script is designed to create and manage a virtual audio cable using 
 2. **Try-Except Block**: The script is enclosed in a `try-except` block to handle exceptions like EOFError and KeyboardInterrupt.
 
 3. **Setting up Virtual Audio Device**:
-   - The script uses `pacmd`, a command-line interface to interact with PulseAudio. It loads a module called `module-null-sink` which creates a virtual sink (output device). The virtual sink is named `dynopii_sink` with a descriptive name "dynopii".
+   - The script uses `pacmd`, a command-line interface to interact with PulseAudio. It loads a module called `module-null-sink` which creates a virtual sink (output device). The virtual sink is named `virualaudio_sink` with a descriptive name "virtualaudio".
    - It then launches `pavucontrol`, which is the PulseAudio Volume Control GUI, allowing the user to manage the audio flows visually.
 
 4. **Capturing and Playing Audio**:
@@ -17,7 +17,7 @@ This Python script is designed to create and manage a virtual audio cable using 
    - If the user presses Ctrl-C (`KeyboardInterrupt`), the script proceeds to cleanly unload the PulseAudio modules and kill the `arecord` process.
 
 6. **Clean Up**:
-   - It lists all loaded PulseAudio modules, filters for the `dynopii_sink`, extracts the module ID, and unloads it using `pactl unload-module`.
+   - It lists all loaded PulseAudio modules, filters for the `virtualaudio_sink`, extracts the module ID, and unloads it using `pactl unload-module`.
    - It also ensures that `arecord` (and thereby indirectly `aplay` since it relies on the pipe from `arecord`) is terminated.
 
 This script is useful for audio manipulation tasks where audio input needs to be captured, processed, and played back in real-time. It sets up everything dynamically and ensures a clean shutdown, which is crucial for avoiding hanging processes and audio issues on the system.
