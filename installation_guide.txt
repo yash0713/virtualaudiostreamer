@@ -13,6 +13,7 @@
 	sudo add-apt-repository ppa:flatpak/stable
 	sudo apt install flatpak
 	sudo apt install python3
+	sudo apt install git
 	
 >> Download VAS.py from github
 	git clone https://github.com/yash0713/virtualaudiostreamer/blob/main/VAS.py
@@ -38,14 +39,14 @@
 6. Under Playback tab, you will see two 'ALSA plug-in [aplay]' . Click on the drop-down list in front of first one and select 'Speaker1'. (Your speaker name might be different. Select accordingly)
 
 7. Repeat the above process and this time select 'Speaker2' from the drop down list.
->> refer to fig b
+>> refer to fig. b
 
 8. Click on Recording tab.
 
 9. Under Recording tab, you will see two 'ALSA plug-in [aplay]' . Click on the drop-down list in both and select 'Monitor of virtual_stream'.
 >> refer to fig c
 
-10. Everything is setup now. You can launch any audio application (Let's say VLC media player). The VLC media player audio stream will appear under the Playback tab. Click the drop-down list in front of it and select 'virtual_stream'
+10. Everything is set now. You can launch any audio application (Let's say VLC media player). The VLC media player audio stream will appear under the Playback tab. Click the drop-down list in front of it and select 'virtual_stream'
 >> refer to fig d
 
 11. End of instructions.
